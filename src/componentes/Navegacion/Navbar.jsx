@@ -13,7 +13,7 @@ const Navbar = () => {
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav mx-auto">
               <li className="nav-item">
-                <Link className="nav-link active" aria-current="page" to="/" style={{ color: "white" }}>Inicio</Link>
+                <Link className="nav-link active" aria-current="page" to="/Inicio" style={{ color: "white" }}>Inicio</Link>
               </li>
               <li className="nav-item">
                 <Link className="nav-link" to="/Iniciarsesion" style={{ color: "white" }}>Iniciar Sesion</Link>

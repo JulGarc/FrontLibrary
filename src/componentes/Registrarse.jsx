@@ -1,20 +1,27 @@
 import React, { useState } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../config/config";
 
-const URI ='http://localhost:3000/api/vi/users/signup'
+const URI = `${API_URL}/users/signup`;
 
 const Registrarse = () => {
     const [name, setName] = useState('');
     const [last_name, setLast_name] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState(''); 
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
     // Procedimiento pa guardar
     const store = async (e) => {
         e.preventDefault();
+        if (password !== confirmPassword) { 
+            //validar las passwprd
+            setError('Las contraseñas no coinciden');
+            return;
+        }
         try {
             const response = await axios.post(URI, {
                 name: name, 
@@ -53,6 +60,10 @@ const Registrarse = () => {
                 <div className="mb-3">
                     <label htmlFor="password" className="form-label">Contraseña</label>
                     <input type="password" className="form-control" id="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="confirmPassword" className="form-label">Confirmar Contraseña</label>
+                    <input type="password" className="form-control" id="confirmPassword" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
                 </div>
                 <button type="submit" className="btn btn-primary">Crear</button>
             </form>
