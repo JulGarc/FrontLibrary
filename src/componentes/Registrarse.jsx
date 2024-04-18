@@ -12,30 +12,44 @@ const Registrarse = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState(''); 
     const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
     const navigate = useNavigate();
-
+    var responseData;
+    var responseStatus;
     // Procedimiento pa guardar
     const store = async (e) => {
         e.preventDefault();
         if (password !== confirmPassword) { 
-            //validar las passwprd
+            //validar las password
             setError('Las contraseñas no coinciden');
             return;
         }
         try {
-            const response = await axios.post(URI, {
+            const data2 = {
                 name: name, 
                 last_name: last_name,
                 email: email,
-                password: password
+                password: password,
+                password_confirmation: confirmPassword
+            }
+            const response = await fetch(URI, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // Si necesitas incluir algún otro header, puedes hacerlo aquí
+                },
+                body: JSON.stringify(data2)
             });
-            if (response.status === 200) {
-                navigate('/');
+            responseData = await response.json();
+            responseStatus = response.status
+
+            if (responseStatus == 201) {
+                setSuccess('Registro completado con éxito');
             } else {
-                setError('Error al crear el usuario');
+                setError('Ocurrió un error: ' + responseData.error);
             }
         } catch (error) {
-            setError('Error al conectar con el servidor');
+            setError('Error al conectar con el servidor: ', error.message);
             console.error('Error al registrar:', error);
         }
     };
@@ -44,6 +58,7 @@ const Registrarse = () => {
         <div className="container">
             <h1>Registrarse.</h1>
             {error && <div className="alert alert-danger">{error}</div>}
+            {success && <div className="alert alert-success">{success}</div>}
             <form onSubmit={store}>
                 <div className="mb-3">
                     <label htmlFor="name" className="form-label">Nombre</label>

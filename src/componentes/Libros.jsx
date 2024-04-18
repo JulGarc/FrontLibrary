@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import { API_URL } from '../config/config'
 
 const Libros = () => {
     const [listaLibros, setListaLibros] = useState([])
     const [tituloLibro, setTituloLibro] = useState(null)
     const [autorLibro, setAutorLibro] = useState(null)
-    const URI ='http://localhost:3000/api/v1/books'
     useEffect(() => {
         obtenerLibros()
     }, []);
@@ -16,9 +16,8 @@ const Libros = () => {
                 book_title: tituloLibro,
                 book_author: autorLibro
             }
-            const response = await axios.get(URI, data);
+            const response = await axios.get(`${API_URL}/books`, data);
             if (response.status === 200) {
-                
                 console.log("data libros2: ", typeof response)
                 setListaLibros(response.data)
             } else {
@@ -30,14 +29,11 @@ const Libros = () => {
     }
     
     return (
-        <div className="card-grid">
-      {listaLibros.map((item, index) => (
-        <div className="card" key={index}>
-          <h2>{item.title}</h2>
-          <p>{item.description}</p>
+        <div>
+            <h1>
+                Componente libros
+            </h1>
         </div>
-      ))}
-    </div>
     )
 }
 

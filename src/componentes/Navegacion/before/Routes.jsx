@@ -4,6 +4,7 @@ import Navbar from "./Navbar";
 import Inicio from "../../Inicio";
 import Iniciarsesion from "../../Iniciarsesion";
 import Registrarse from "../../Registrarse";
+import Libros from "../../Libros";
 
 const AppRoutes = () => {
   return (
