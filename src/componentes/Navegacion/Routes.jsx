@@ -5,6 +5,7 @@ import Navbar from "./Navbar";
 
 import Iniciarsesion from "../Iniciarsesion";
 import Registrarse from "../Registrarse";
+import Libros from "../Libros";
 
 const AppRoutes = () => {
   return (
@@ -12,6 +13,7 @@ const AppRoutes = () => {
       <Route path="/" element={<Navigate to="/" />} />
       <Route path="/Iniciarsesion" element={<Iniciarsesion />} />
       <Route path="/Registrarse" element={<Registrarse />} />
+      <Route path="/Libros" element={<Libros/>}/>
     </Routes>
   );
 };

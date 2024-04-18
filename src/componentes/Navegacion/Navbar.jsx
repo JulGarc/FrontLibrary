@@ -21,7 +21,9 @@ const Navbar = () => {
               <li className="nav-item">
                 <Link className="nav-link" to="/Registrarse" style={{ color: "white" }}>Registrarse</Link>
               </li>
-
+              <li className="nav-item">
+                <Link className="nav-link" to="/Libros" style={{ color: "white" }}>Libros</Link>
+              </li>
             </ul>
           </div>
         </div>
