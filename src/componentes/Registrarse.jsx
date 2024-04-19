@@ -36,7 +36,6 @@ const Registrarse = () => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    // Si necesitas incluir algún otro header, puedes hacerlo aquí
                 },
                 body: JSON.stringify(data2)
             });

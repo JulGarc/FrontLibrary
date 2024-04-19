@@ -2,28 +2,41 @@ import  React, { useState }  from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { API_URL } from "../config/config";
+import { useAuth } from "./Contextos/AuthContext";
 
-const URI = `${API_URL}/auth/login`;
+const URI = `${API_URL}/auth/signin`;
 const Iniciarsesion=()=>{
-
+    const {login} = useAuth();
     const[email,setEmail]=useState('');
     const[password,setPassword]=useState('');
     const[error,setError]=useState('');
     const navigate = useNavigate();
-
+    var responseData;
+    var responseStatus;
     const handleSubmit =async(e)=>{
         e.preventDefault();
 
         try {
-            const response=await axios.post(URI,{
-            email,
-            password
+            const request = { email, password }
+            
+            const response = await fetch(URI, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(request)
             });
-            if (response.status === 200) {
-                navigate('/');
+
+            responseData = await response.json()
+            responseStatus = response.status
+
+            if (responseStatus == 200) {
+                const token = responseData['data']['token']
+                login(token)
+                navigate('/Libros');
             } else {
-                setError('Error al crear el usuario');
-            }   
+                setError('Ocurrió un error: ' + responseData.error);
+            }
         } catch (error) {
             setError('error al iniciar sesion')
             console.log('Error al iniciar sesion', error)

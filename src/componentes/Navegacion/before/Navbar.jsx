@@ -1,7 +1,13 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { useAuth } from "../../Contextos/AuthContext";
 
 const Navbar = () => {
+  const  { token } = useAuth();
+  const { logout } = useAuth();
+  const cerrarSesion = () => {
+    logout()
+  }
   return (
     
       <nav className="navbar navbar-expand-lg navbar-dark bg-black">   
@@ -24,6 +30,11 @@ const Navbar = () => {
               <li className="nav-item">
                 <Link className="nav-link" to="/Libros" style={{ color: "white" }}>Libros</Link>
               </li>
+              {
+                token ? (
+                  <button onClick={cerrarSesion}>Cerrar sesión</button>
+                ) : ("")
+              }
             </ul>
           </div>
         </div>
