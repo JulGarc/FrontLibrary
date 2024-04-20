@@ -1,12 +1,15 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { useAuth } from "../../Contextos/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const  { token } = useAuth();
   const { logout } = useAuth();
+  const navigate = useNavigate();
   const cerrarSesion = () => {
     logout()
+    navigate('/Iniciarsesion');
   }
   return (
     

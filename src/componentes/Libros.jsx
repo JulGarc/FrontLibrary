@@ -4,7 +4,9 @@ import { API_URL } from '../config/config'
 import { useAuth } from './Contextos/AuthContext'
 
 const Libros = () => {
-    const { token } = useAuth();
+    const { token } = useAuth()
+    const {decodeToken} = useAuth()
+    const tokenData = decodeToken(token)
     const [listaLibros, setListaLibros] = useState([])
     const [tituloLibro, setTituloLibro] = useState(null)
     const [autorLibro, setAutorLibro] = useState(null)
@@ -31,12 +33,15 @@ const Libros = () => {
     }
     
     return (
-        <div>
+        <div className='container' style={{ justifyContent: 'center', alignItems: 'center'}}>
           <h1>Componente libros</h1>
           {token ? (
             <>
               <div key={1}><p>Usuario autenticado. Token: {token}</p></div>
-              {/* <div key={2}><p>Data del token: {tokenData}</p></div> */}
+              <div key={2}><p>Id de usuario: {tokenData.auth_user_id}</p></div>
+              <div key={3}><p>Rol de usuario: {tokenData.auth_role_id}</p></div>
+              <div key={4}><p>Emisión del token: {tokenData.auth_token_iat}</p></div>
+              <div key={5}><p>Expiración del token: {tokenData.auth_token_exp}</p></div>
             </>
           ) : (
             <p>Usuario no autenticado.</p>
