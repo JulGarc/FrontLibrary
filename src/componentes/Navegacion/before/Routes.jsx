@@ -5,6 +5,8 @@ import Inicio from "../../Inicio";
 import Iniciarsesion from "../../Iniciarsesion";
 import Registrarse from "../../Registrarse";
 import Libros from "../../Libros";
+import Crearlibro from "../../Crearlibro";
+import Usuarios from "../../Usuarios";
 
 const AppRoutes = () => {
   return (
@@ -14,6 +16,8 @@ const AppRoutes = () => {
       <Route path="/Iniciarsesion" element={<Iniciarsesion />} />
       <Route path="/Registrarse" element={<Registrarse />} />
       <Route path="/Libros" element={<Libros/>}/>
+      <Route path="/Libro/crear" element={<Crearlibro/>}/>
+      <Route path="/Usuarios" element={<Usuarios/>}/>
     </Routes>
   );
 };
