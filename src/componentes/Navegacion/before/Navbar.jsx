@@ -10,6 +10,7 @@ const Navbar = () => {
   const {decodeToken} = useAuth()
   const tokenData = decodeToken(token)
   const [showNavMenu, setShowNavMenu] = useState(false)
+  const [showUserNavMenu, setShowUserNavMenu] = useState(false)
   const navigate = useNavigate();
 
   const handleMouseEnter = () => {
@@ -18,6 +19,14 @@ const Navbar = () => {
 
   const handleMouseLeave = () => {
     setShowNavMenu(false)
+  }
+
+  const handleUserMouseEnter = () => {
+    setShowUserNavMenu(true)
+  }
+
+  const handleUserMouseLeave = () => {
+    setShowUserNavMenu(false)
   }
 
   const cerrarSesion = () => {
@@ -52,26 +61,6 @@ const Navbar = () => {
                   </li>
                 ) : (null)
               }
-
-              {/* {
-                token && tokenData.auth_role_id == 1 ? (
-                  <li className="nav-item" style={{ position: "relative", display: "inline-block" }} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-                    <Link className="nav-link" to="/Libros" style={{ textDecoration: "none", color: "white"}}>
-                      Libros
-                    </Link>
-                    {showNavMenu && (
-                      <div className="dropdown-menu" style={{ left: 0, backgroundColor: "#000000", padding: "10px", display: "block" }} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-                        <Link to="/Libro/crear" className="dropdown-link" style={{ display: "block", color: "white", textDecoration: "none", padding: "5px 0" }}>Crear Libro</Link>
-                      </div>
-                    )}
-                    
-                  </li>
-                ) : (
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/Libros" style={{ color: "white" }}>Libros</Link>
-                  </li>
-                )
-              } */}
               {
                   <li className="nav-item" style={{ position: "relative", display: "inline-block" }} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
                     <Link className="nav-link" to="/Libros" style={{ textDecoration: "none", color: "white"}}>
@@ -108,14 +97,27 @@ const Navbar = () => {
                 ) : (null)
               }
 
-              {
-                token ? (
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/Iniciarsesion" onClick={cerrarSesion} style={{ color: "white" }}>Cerrar sesión</Link>
-                  </li>                  
-                ) : (null)
-              }
             </ul>
+              <li className="nav-item" style={{ position: "relative", display: "inline-block", marginRight: '50px' }} onMouseEnter={handleUserMouseEnter} onMouseLeave={handleUserMouseLeave}>
+                {
+                  token && (
+                    <Link className="nav-link" to="/Libros" style={{ textDecoration: "none", color: "white"}}>
+                      Usuario
+                    </Link>
+                  )
+                }
+                {(showUserNavMenu && token) && (
+                  <div className="dropdown-menu" style={{ left: -50, top: 25, backgroundColor: "#000000", padding: "10px", display: "block" }} onMouseEnter={handleUserMouseEnter} onMouseLeave={handleUserMouseLeave}>
+                    <Link to="" className="dropdown-link" style={{ display: "block", color: "white", textDecoration: "none", padding: "5px 0", textAlign: 'center' }}>Perfil</Link>
+                  </div>
+                )}
+                {(showUserNavMenu && token) && (
+                  <div className="dropdown-menu" style={{ left: -50, top: 75, backgroundColor: "#000000", padding: "10px", display: "block", marginRight: '50px', textAlign: 'center' }} onMouseEnter={handleUserMouseEnter} onMouseLeave={handleUserMouseLeave}>
+                    <Link className="nav-link" to="/Iniciarsesion" onClick={cerrarSesion} style={{ color: "white" }}>Cerrar sesión</Link>
+                  </div>
+                )}
+                
+              </li>
           </div>
         </div>
       </nav>

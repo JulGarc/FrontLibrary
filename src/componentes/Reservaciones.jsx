@@ -18,7 +18,10 @@ const Reservaciones = () => {
     var styles = {
         tableResponsive: {
             overflowX: 'auto',
-            width: '100%'
+            width: '103%',
+            border: '1px solid #F3F3F3',
+            marginLeft: '-30px',
+            textAlign: 'center'
         },
         filterButton: {
             width: '200px'
@@ -33,6 +36,15 @@ const Reservaciones = () => {
         },
         filtersModal: {
             paddingBottom: '15px'
+        },
+        tableHead: {
+            backgroundColor: '#85D8ED'
+        },
+        tableBody: {
+            textAlign: 'center'
+        },
+        cellStyle: {
+            padding: '6px'
         }
     }
 
@@ -120,7 +132,7 @@ const Reservaciones = () => {
     }
 
     return (
-        <div className='container'>
+        <div className='container' style={{ padding: '10px' }}>
             <div className="d-flex justify-content-between align-items-center" style={styles.headerContent}>
                 {
                     token && tokenData.auth_role_id == 1 ? (
@@ -170,32 +182,32 @@ const Reservaciones = () => {
             searchTerm ? (
                 filteredReservations.length >= 1 ? (
                     <table style={styles.tableResponsive}>
-                        <thead>
+                        <thead style={styles.tableHead}>
                             <tr>
-                                <th>Libro</th>
+                                <th style={styles.cellStyle}>Libro</th>
                                 {
-                                    token && tokenData.auth_role_id == 1 ? (<th>Nombre usuario</th>) : (null)
+                                    token && tokenData.auth_role_id == 1 ? (<th style={styles.cellStyle}>Nombre usuario</th>) : (null)
                                 }
                                 {
-                                    token && tokenData.auth_role_id == 1 ? (<th>Correo usuario</th>) : (null)
+                                    token && tokenData.auth_role_id == 1 ? (<th style={styles.cellStyle}>Correo usuario</th>) : (null)
                                 }
-                                <th>Fecha reservación</th>
+                                <th style={styles.cellStyle}>Fecha reservación</th>
                             </tr>
                         </thead>
 
-                        <tbody>
+                        <tbody style={styles.tableBody}>
                             {
                                 filteredReservations.map(reservation => (
                                     
                                     <tr key={reservation.id}>
-                                        <td>{reservation.Book.book_name}</td>
+                                        <td style={styles.cellStyle}>{reservation.Book.book_name}</td>
                                         {
-                                            token && tokenData.auth_role_id == 1 ? (<td>{reservation.User.applicant_name} {reservation.User.applicant_last_name}</td>) : (null)
+                                            token && tokenData.auth_role_id == 1 ? (<td style={styles.cellStyle}>{reservation.User.applicant_name} {reservation.User.applicant_last_name}</td>) : (null)
                                         }
                                         {
-                                            token && tokenData.auth_role_id == 1 ? (<td><td>{reservation.User.applicant_email}</td></td>) : (null)
+                                            token && tokenData.auth_role_id == 1 ? (<td style={styles.cellStyle}>{reservation.User.applicant_email}</td>) : (null)
                                         }
-                                        <td>{dateFormat(reservation.createdAt)}</td>
+                                        <td style={styles.cellStyle}>{dateFormat(reservation.createdAt)}</td>
                                     </tr>
                                 ))
                             }
@@ -208,31 +220,31 @@ const Reservaciones = () => {
                 )
             ) : (
                 <table style={styles.tableResponsive}>
-                        <thead>
+                        <thead style={styles.tableHead}>
                             <tr>
-                            <th>Libro</th>
+                            <th style={styles.cellStyle}>Libro</th>
                                 {
-                                    token && tokenData.auth_role_id == 1 ? (<th>Nombre usuario</th>) : (null)
+                                    token && tokenData.auth_role_id == 1 ? (<th style={styles.cellStyle}>Nombre usuario</th>) : (null)
                                 }
                                 {
-                                    token && tokenData.auth_role_id == 1 ? (<th>Correo usuario</th>) : (null)
+                                    token && tokenData.auth_role_id == 1 ? (<th style={styles.cellStyle}>Correo usuario</th>) : (null)
                                 }
-                                <th>Fecha reservación</th>
+                                <th style={styles.cellStyle}>Fecha reservación</th>
                             </tr>
                         </thead>
 
-                        <tbody>
+                        <tbody style={styles.tableBody}>
                         {
                                 filteredReservations.map(reservation => (
                                     <tr key={reservation.id}>
-                                        <td>{reservation.Book.book_name}</td>
+                                        <td style={styles.cellStyle}>{reservation.Book.book_name}</td>
                                         {
-                                            token && tokenData.auth_role_id == 1 ? (<td>{reservation.User.applicant_name} {reservation.User.applicant_last_name}</td>) : (null)
+                                            token && tokenData.auth_role_id == 1 ? (<td style={styles.cellStyle}>{reservation.User.applicant_name} {reservation.User.applicant_last_name}</td>) : (null)
                                         }
                                         {
-                                            token && tokenData.auth_role_id == 1 ? (<td><td>{reservation.User.applicant_email}</td></td>) : (null)
+                                            token && tokenData.auth_role_id == 1 ? (<td style={styles.cellStyle}>{reservation.User.applicant_email}</td>) : (null)
                                         }
-                                        <td>{dateFormat(reservation.createdAt)}</td>
+                                        <td style={styles.cellStyle}>{dateFormat(reservation.createdAt)}</td>
                                     </tr>
                                 ))
                             }
