@@ -53,7 +53,7 @@ const Navbar = () => {
                 ) : (null)
               }
 
-              {
+              {/* {
                 token && tokenData.auth_role_id == 1 ? (
                   <li className="nav-item" style={{ position: "relative", display: "inline-block" }} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
                     <Link className="nav-link" to="/Libros" style={{ textDecoration: "none", color: "white"}}>
@@ -64,18 +64,46 @@ const Navbar = () => {
                         <Link to="/Libro/crear" className="dropdown-link" style={{ display: "block", color: "white", textDecoration: "none", padding: "5px 0" }}>Crear Libro</Link>
                       </div>
                     )}
+                    
                   </li>
                 ) : (
                   <li className="nav-item">
                     <Link className="nav-link" to="/Libros" style={{ color: "white" }}>Libros</Link>
                   </li>
                 )
+              } */}
+              {
+                  <li className="nav-item" style={{ position: "relative", display: "inline-block" }} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+                    <Link className="nav-link" to="/Libros" style={{ textDecoration: "none", color: "white"}}>
+                      Libros
+                    </Link>
+                    {(showNavMenu && token && tokenData.auth_role_id == 1) && (
+                      <div className="dropdown-menu" style={{ left: 0, backgroundColor: "#000000", padding: "10px", display: "block" }} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+                        <Link to="/Libro/crear" className="dropdown-link" style={{ display: "block", color: "white", textDecoration: "none", padding: "5px 0" }}>Crear Libro</Link>
+                      </div>
+                    )}
+                    {(showNavMenu && token && tokenData.auth_role_id != 1) && (
+                      <div className="dropdown-menu" style={{ left: 0, backgroundColor: "#000000", padding: "10px", display: "block" }} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+                        <Link to="/Reservaciones" className="dropdown-link" style={{ display: "block", color: "white", textDecoration: "none", padding: "5px 0" }}>Mis reservaciones</Link>
+                      </div>
+                    )}
+                    
+                  </li>
+                
               }
 
               {
                 token && tokenData.auth_role_id == 1 ? (
                   <li className="nav-item">
                     <Link className="nav-link" to="/Usuarios" style={{ color: "white" }}>Usuarios</Link>
+                  </li>
+                ) : (null)
+              }
+
+              {
+                token && tokenData.auth_role_id == 1 ? (
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/Reservaciones" style={{ color: "white" }}>Reservaciones</Link>
                   </li>
                 ) : (null)
               }

@@ -7,6 +7,7 @@ import Registrarse from "../../Registrarse";
 import Libros from "../../Libros";
 import Crearlibro from "../../Crearlibro";
 import Usuarios from "../../Usuarios";
+import Reservaciones from "../../Reservaciones";
 
 const AppRoutes = () => {
   return (
@@ -18,6 +19,7 @@ const AppRoutes = () => {
       <Route path="/Libros" element={<Libros/>}/>
       <Route path="/Libro/crear" element={<Crearlibro/>}/>
       <Route path="/Usuarios" element={<Usuarios/>}/>
+      <Route path="/Reservaciones" element={<Reservaciones/>}/>
     </Routes>
   );
 };
