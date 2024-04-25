@@ -76,6 +76,11 @@ const Navbar = () => {
                         <Link to="/Reservaciones" className="dropdown-link" style={{ display: "block", color: "white", textDecoration: "none", padding: "5px 0" }}>Mis reservaciones</Link>
                       </div>
                     )}
+                    {(showNavMenu && token && tokenData.auth_role_id != 1) && (
+                      <div className="dropdown-menu" style={{ left: 0, top: 90, backgroundColor: "#000000", padding: "10px", display: "block" }} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+                        <Link to="/Favoritos" className="dropdown-link" style={{ display: "block", color: "white", textDecoration: "none", padding: "5px 0" }}>Mis favoritos</Link>
+                      </div>
+                    )}
                     
                   </li>
                 
@@ -98,21 +103,34 @@ const Navbar = () => {
               }
 
             </ul>
-              <li className="nav-item" style={{ position: "relative", display: "inline-block", marginRight: '50px' }} onMouseEnter={handleUserMouseEnter} onMouseLeave={handleUserMouseLeave}>
+              <li className="nav-item" style={{ left: -10, position: "relative", display: "inline-block", marginRight: '50px', textAlign: 'center' }} onMouseEnter={handleUserMouseEnter} onMouseLeave={handleUserMouseLeave}>
                 {
                   token && (
-                    <Link className="nav-link" to="/Libros" style={{ textDecoration: "none", color: "white"}}>
-                      Usuario
-                    </Link>
+                    <>
+                      <div style={{ textAlign: 'center' }}>
+                      <Link className="nav-link" to="/Libros" style={{ textDecoration: "none", color: "white"}}>
+                        { tokenData.auth_user_name }
+                      </Link>
+                    <small style={{ textDecoration: "none", color: "white"}}>
+                      {
+                        token && tokenData.auth_role_id == 1 ? (
+                          "Admin"
+                        ) : (
+                          "Usuario"
+                        )
+                      }
+                    </small>
+                      </div>
+                    </>
                   )
                 }
                 {(showUserNavMenu && token) && (
-                  <div className="dropdown-menu" style={{ left: -50, top: 25, backgroundColor: "#000000", padding: "10px", display: "block" }} onMouseEnter={handleUserMouseEnter} onMouseLeave={handleUserMouseLeave}>
-                    <Link to="" className="dropdown-link" style={{ display: "block", color: "white", textDecoration: "none", padding: "5px 0", textAlign: 'center' }}>Perfil</Link>
+                  <div className="dropdown-menu" style={{ left: -60, top: 25, backgroundColor: "#000000", padding: "10px", display: "block" }} onMouseEnter={handleUserMouseEnter} onMouseLeave={handleUserMouseLeave}>
+                    <Link to="/Perfil" className="dropdown-link" style={{ display: "block", color: "white", textDecoration: "none", padding: "5px 0", textAlign: 'center' }}>Perfil</Link>
                   </div>
                 )}
                 {(showUserNavMenu && token) && (
-                  <div className="dropdown-menu" style={{ left: -50, top: 75, backgroundColor: "#000000", padding: "10px", display: "block", marginRight: '50px', textAlign: 'center' }} onMouseEnter={handleUserMouseEnter} onMouseLeave={handleUserMouseLeave}>
+                  <div className="dropdown-menu" style={{ left: -60, top: 75, backgroundColor: "#000000", padding: "10px", display: "block", marginRight: '50px', textAlign: 'center' }} onMouseEnter={handleUserMouseEnter} onMouseLeave={handleUserMouseLeave}>
                     <Link className="nav-link" to="/Iniciarsesion" onClick={cerrarSesion} style={{ color: "white" }}>Cerrar sesión</Link>
                   </div>
                 )}

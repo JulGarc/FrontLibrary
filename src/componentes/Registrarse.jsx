@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from 'axios';
+import Swal from 'sweetalert2'
 import { useNavigate } from "react-router-dom";
 import { API_URL } from "../config/config";
 
@@ -21,8 +21,11 @@ const Registrarse = () => {
         e.preventDefault();
         if (password !== confirmPassword) { 
             //validar las password
-            setError('Las contraseñas no coinciden');
-            return;
+            Swal.fire({
+                icon: 'error',
+                title: 'ERROR',
+                text: "Las contraseñas no coinciden"
+            })
         }
         try {
             const data2 = {
@@ -43,21 +46,30 @@ const Registrarse = () => {
             responseStatus = response.status
 
             if (responseStatus == 201) {
-                setSuccess('Registro completado con éxito');
+                Swal.fire({
+                    icon: 'success',
+                    title: 'ÉXITO',
+                    text: "Registro completado con éxito"
+                })
             } else {
-                setError('Ocurrió un error: ' + responseData.error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ERROR',
+                    text: responseData.error
+                })
             }
         } catch (error) {
-            setError('Error al conectar con el servidor: ', error.message);
-            console.error('Error al registrar:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'ERROR',
+                text: error.message
+            })
         }
     };
 
     return (
         <div className="container">
-            <h1>Registrarse.</h1>
-            {error && <div className="alert alert-danger">{error}</div>}
-            {success && <div className="alert alert-success">{success}</div>}
+            <h1>Registrarse</h1>
             <form onSubmit={store}>
                 <div className="mb-3">
                     <label htmlFor="name" className="form-label">Nombre</label>

@@ -1,8 +1,8 @@
 import  React, { useState }  from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { API_URL } from "../config/config";
 import { useAuth } from "./Contextos/AuthContext";
+import Swal from 'sweetalert2'
 
 const URI = `${API_URL}/auth/signin`;
 const Iniciarsesion=()=>{
@@ -35,18 +35,24 @@ const Iniciarsesion=()=>{
                 login(token)
                 navigate('/Libros');
             } else {
-                setError('Ocurrió un error: ' + responseData.error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ERROR',
+                    text: responseData.error
+                })
             }
         } catch (error) {
-            setError('error al iniciar sesion')
-            console.log('Error al iniciar sesion', error)
+            Swal.fire({
+                icon: 'error',
+                title: 'ERROR',
+                text: error.message
+            })
         }
     }
     return(
         <div>
         <div className="container">
             <h1>Iniciar sesion.</h1>
-            {error && <div className="alert alert-danger">{error}</div>}
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                     <label htmlFor="email" className="form-label">Correo</label>

@@ -8,6 +8,9 @@ import Libros from "../../Libros";
 import Crearlibro from "../../Crearlibro";
 import Usuarios from "../../Usuarios";
 import Reservaciones from "../../Reservaciones";
+import Favoritos from "../../Favoritos";
+import Perfil from "../../Perfil";
+import Detalleslibro from "../../Detalleslibro";
 
 const AppRoutes = () => {
   return (
@@ -20,6 +23,9 @@ const AppRoutes = () => {
       <Route path="/Libro/crear" element={<Crearlibro/>}/>
       <Route path="/Usuarios" element={<Usuarios/>}/>
       <Route path="/Reservaciones" element={<Reservaciones/>}/>
+      <Route path="/Favoritos" element={<Favoritos/>}/>
+      <Route path="/Perfil" element={<Perfil/>}/>
+      <Route path="/Libro/detalles/:id" element={<Detalleslibro/>}></Route>
     </Routes>
   );
 };

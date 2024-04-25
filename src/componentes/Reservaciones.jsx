@@ -123,6 +123,64 @@ const Reservaciones = () => {
         getReservations()
     }, [])
 
+    const devolverLibro = async (reservationId) => {
+        try {
+            const URI = `${API_URL}/reservations/delete/${reservationId}`
+            const query = await fetch(`${URI}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token
+                }
+            })
+
+            responseData = await query.json()
+            responseStatus = query.status
+            
+
+            if (responseStatus != 200) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ERROR',
+                    text: responseData.error
+                })
+            } else {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'ÉXITO',
+                    text: 'Libro devuelto con éxito'
+                })
+                getReservations()
+            }
+
+        } catch (err) {
+            Swal.fire({
+                icon: 'error',
+                title: 'ERROR',
+                text: err.message
+            })
+        }
+    }
+
+    const removeEventHandle = (event, reservationId) => {
+        event.preventDefault();
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: '¿Quieres devolver este libro?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Confirmar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                devolverLibro(reservationId);
+            }
+        });
+    }
+    
+
     const dateFormat = (date) => {
         const fecha = new Date(date);
         const dia = fecha.getDate();
@@ -219,7 +277,8 @@ const Reservaciones = () => {
                     </div>
                 )
             ) : (
-                <table style={styles.tableResponsive}>
+                filteredReservations.length >= 1 ? (
+                    <table style={styles.tableResponsive}>
                         <thead style={styles.tableHead}>
                             <tr>
                             <th style={styles.cellStyle}>Libro</th>
@@ -230,26 +289,41 @@ const Reservaciones = () => {
                                     token && tokenData.auth_role_id == 1 ? (<th style={styles.cellStyle}>Correo usuario</th>) : (null)
                                 }
                                 <th style={styles.cellStyle}>Fecha reservación</th>
+                                {
+                                    token && tokenData.auth_role_id != 1 ? (
+                                        <th style={styles.cellStyle}>Acciones</th>
+                                    ) : (null)
+                                }
                             </tr>
                         </thead>
 
                         <tbody style={styles.tableBody}>
                         {
-                                filteredReservations.map(reservation => (
-                                    <tr key={reservation.id}>
-                                        <td style={styles.cellStyle}>{reservation.Book.book_name}</td>
-                                        {
-                                            token && tokenData.auth_role_id == 1 ? (<td style={styles.cellStyle}>{reservation.User.applicant_name} {reservation.User.applicant_last_name}</td>) : (null)
-                                        }
-                                        {
-                                            token && tokenData.auth_role_id == 1 ? (<td style={styles.cellStyle}>{reservation.User.applicant_email}</td>) : (null)
-                                        }
-                                        <td style={styles.cellStyle}>{dateFormat(reservation.createdAt)}</td>
-                                    </tr>
-                                ))
-                            }
+                            filteredReservations.map(reservation => (
+                                <tr key={reservation.id}>
+                                    <td style={styles.cellStyle}>{reservation.Book.book_name}</td>
+                                    {
+                                        token && tokenData.auth_role_id == 1 ? (<td style={styles.cellStyle}>{reservation.User.applicant_name} {reservation.User.applicant_last_name}</td>) : (null)
+                                    }
+                                    {
+                                        token && tokenData.auth_role_id == 1 ? (<td style={styles.cellStyle}>{reservation.User.applicant_email}</td>) : (null)
+                                    }
+                                    <td style={styles.cellStyle}>{dateFormat(reservation.createdAt)}</td>
+                                    {
+                                        token && tokenData.auth_role_id != 1 ? (
+                                            <a href='#' onClick={(event) => removeEventHandle(event, reservation.id)} className='btn btn-warning btn-sm' style={{ marginTop: '5px', marginBottom: '5px' }}>Devolver</a>
+                                        ) : (null)
+                                    }
+                                </tr>
+                            ))
+                        }
                         </tbody>
                     </table>
+                ) : (
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                        <p>No se hallaron reservaciones vigentes</p>
+                    </div>
+                )
             )
           }
         </ul>
