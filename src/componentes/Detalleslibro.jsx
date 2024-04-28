@@ -6,8 +6,8 @@ import Swal from 'sweetalert2'
 import { Link } from 'react-router-dom';
 
 const URI = `${API_URL}/books/details`
-const RESERVATIONS_URI = `${API_URL}/reservations/user`
-const FAVORITES_URI = `${API_URL}/favorites/user`
+const RESERVATIONS_URI = `${API_URL}/reservations`
+const FAVORITES_URI = `${API_URL}/favorites/`
 
 const Detalleslibro = () => {
     const { id } = useParams();
@@ -18,6 +18,10 @@ const Detalleslibro = () => {
     let responseData;
     let responseStatus;
     const [book, setBook] = useState([])
+    const [favorites, setFavorites] = useState([])
+    const [userFavoritesArray, setUserFavoritesArray] = useState([])
+    const [reservations, setReservations] = useState([])
+    const [userReservationsArray, setUserReservationsArray] = useState([])
 
     const getBookDetails = async () => {
         try {
@@ -39,7 +43,6 @@ const Detalleslibro = () => {
                     text: responseData.error
                 })
             } else {
-                console.log("respuesta: ", responseData);
                 setBook(responseData.data)
             }
         } catch (err) {
@@ -50,6 +53,245 @@ const Detalleslibro = () => {
             })
         }
     }
+
+    const reservateBook = async (BookId) => {
+        try {
+            const query = await fetch(`${RESERVATIONS_URI}/create/${BookId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token
+                }
+            })
+
+            responseData = await query.json()
+            responseStatus = query.status
+            
+
+            if (responseStatus != 201) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ERROR',
+                    text: responseData.error
+                })
+            } else {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'ÉXITO',
+                    text: "Libro reservado con éxito"
+                })
+            }
+        } catch (err) {
+            Swal.fire({
+                icon: 'error',
+                title: 'ERROR',
+                text: err.message
+            })
+        }
+    }
+
+    const getUserFavorites = async () => {
+        try {
+            const query = await fetch(`${FAVORITES_URI}user/${tokenData.auth_user_id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token
+                }
+            })
+
+            responseData = await query.json()
+            responseStatus = query.status
+            
+
+            if (responseStatus != 200) {
+                console.error("favoritos no obtenidos: ", responseData.error)
+            } else {
+                setUserFavoritesArray(responseData.data.userFavoritesArray)
+            }
+        } catch (err) {
+            Swal.fire({
+                icon: 'error',
+                title: 'ERROR',
+                text: err.message
+            })
+        }
+    }
+
+    const getUserReservations = async () => {
+        try {
+            const query = await fetch(`${RESERVATIONS_URI}/user/${tokenData.auth_user_id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token
+                }
+            })
+
+            responseData = await query.json()
+            responseStatus = query.status
+            
+
+            if (responseStatus != 200) {
+                console.error("favoritos no obtenidos: ", responseData.error)
+            } else {
+                setUserReservationsArray(responseData.data.userReservationsArray)
+                setReservations(responseData.data.data)
+            }
+        } catch (err) {
+            Swal.fire({
+                icon: 'error',
+                title: 'ERROR',
+                text: err.message
+            })
+        }
+    }
+
+    const removeFavorite = async (bookId) => {
+        let favoriteId;
+        for (const key in favorites) {
+            if (favorites.hasOwnProperty(key) && favorites[key].book_id === bookId) {
+                favoriteId = favorites[key].id
+            }
+            
+        }
+        try {
+            const URI = `${API_URL}/favorites/delete/${favoriteId}`
+            const query = await fetch(`${URI}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token
+                }
+            })
+
+            responseData = await query.json()
+            responseStatus = query.status
+            
+
+            if (responseStatus != 200) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ERROR',
+                    text: responseData.error
+                })
+            } else {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'ÉXITO',
+                    text: 'Favorito eliminado correctamente'
+                })
+                getUserFavorites()
+            }
+
+        } catch (err) {
+            Swal.fire({
+                icon: 'error',
+                title: 'ERROR',
+                text: err.message
+            })
+        }
+    }
+
+    const addFavoriteEventHandle = (event, bookId) => {
+        event.preventDefault();
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: '¿Añadir este libro a tus favoritos?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Confirmar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                addToFavorites(bookId)
+            }
+        });
+    }
+
+    const addToFavorites = async (BookId) => {
+        try {
+            const query = await fetch(`${FAVORITES_URI}/create/${BookId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token
+                }
+            })
+
+            responseData = await query.json()
+            responseStatus = query.status
+            
+
+            if (responseStatus != 201) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ERROR',
+                    text: responseData.error
+                })
+            } else {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'ÉXITO',
+                    text: "Libro añadido a favoritos"
+                })
+                getUserFavorites()
+            }
+        } catch (err) {
+            Swal.fire({
+                icon: 'error',
+                title: 'ERROR',
+                text: err.message
+            })
+        }
+    }
+
+    const removeFavoriteEventHandle = (event, bookId) => {
+        event.preventDefault();
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: '¿Eliminar este libro de tus favoritos?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Confirmar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                removeFavorite(bookId)
+            }
+        });
+    }
+
+    const addReservationEventHandle = (event, bookId) => {
+        event.preventDefault();
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: '¿Reservar este libro?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Confirmar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                reservateBook(bookId)
+            }
+        });
+    }
+    
+
+    useEffect(() => {
+        if (token) {
+            getUserFavorites(),
+            getUserReservations()
+        }
+        getBookDetails()
+    }, [])
 
     const styles = {
         container: {
@@ -102,11 +344,6 @@ const Detalleslibro = () => {
         }
 
     };
-    
-
-    useEffect(() => {
-        getBookDetails()
-    }, [])
 
     return (
         <div className='container' style={styles.container}>
@@ -122,7 +359,18 @@ const Detalleslibro = () => {
                 <div style={styles.detailsContainer}>
                     <form style={{ width: '100%' }} /* onSubmit={updateUserHandle} */>
                         <div style={styles.header}>
-                            <h3 style={styles.header}> {book.title} </h3>
+                            <h3 style={styles.header}>
+                                {book.title}
+                                {
+                                    token ? (
+                                        userFavoritesArray.includes(book.id) ? (
+                                            <a style={{ marginLeft: '13px' }} href="#" onClick={(event) => removeFavoriteEventHandle(event, book.id)}><i className="fas fa-star"></i></a>
+                                        ) : (
+                                            <a style={{ marginLeft: '13px' }} href="#" onClick={(event) => addFavoriteEventHandle(event, book.id)}><i className="far fa-star"></i></a>
+                                        )
+                                    ) : (null)
+                                }
+                            </h3>
                         </div>
                         <strong><label style={styles.label}> Sinopsis. </label></strong>
 
@@ -169,13 +417,25 @@ const Detalleslibro = () => {
                                 </div>
                             ) : (
                                 !book.Reservation ? (
-                                    <div style={styles.footerReservateContent}>
-                                        <a href="#" className='btn btn-primary form-control' style={styles.reservateButton}>Reservar</a>
-                                    </div>
+                                    userReservationsArray.includes(book.id) ? (
+                                        <div style={styles.footerReservateContent}>
+                                            <a href="#" onClick={(event) => addReservationEventHandle(event, book.id)} className='btn btn-primary form-control' style={styles.reservateButton}>Devolver</a>
+                                        </div>
+                                    ) : (
+                                        <div style={styles.footerReservateContent}>
+                                            {/* <a href="#" className='btn btn-primary form-control' style={styles.reservateButton}>Reservar</a> */}
+                                            <a href="#" className='btn btn-primary form-control' style={styles.reservateButton} onClick={(event) => addReservationEventHandle(event, book.id)}>Reservar</a>
+                                        </div> 
+                                    )
+                                    
                                 ) : (
-                                    <div style={styles.footerReservateContent}>
-                                        <button href="#" className='btn btn-danger form-control' style={styles.reservateButton} disabled>No disponible</button>
+                                    book.Reservation.user_id == tokenData.auth_user_id ? (
+                                        <div style={styles.footerReservateContent}>
+                                        <button href="#" className='btn btn-danger form-control' style={styles.reservateButton} disabled>Ya reservado</button>
                                     </div>
+                                    ) : (<div style={styles.footerReservateContent}>
+                                        <button href="#" className='btn btn-danger form-control' style={styles.reservateButton} disabled>No disponible</button>
+                                    </div>)
                                 )
                             )
                         }
