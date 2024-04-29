@@ -146,52 +146,104 @@ const Perfil = () => {
         });
     }
 
+    const styles = {
+        editFormContent: {
+            flex: '1',
+            marginLeft: '10px',
+            marginTop: '20px',
+            backgroundColor: '#FFFFFF',
+            border: '2px solid #FFF5B3',
+            borderRadius: '5px 5px 5px 5px',
+            padding: '25px',
+            height: '440px'
+        },
+        formContent: {
+            flex: '1',
+            marginLeft: '10px',
+            marginTop: '20px',
+            backgroundColor: '#FFFFFF',
+            border: '2px solid #FFF5B3',
+            borderRadius: '5px 5px 5px 5px',
+            padding: '25px',
+        },
+        titleHeader: {
+            marginTop: '15px',
+            textAlign: 'center',
+            padding: '5px',
+            backgroundColor: '#FFFFFF',
+            border: '2px solid #FFF5B3',
+            borderRadius: '50px 5px 50px 5px',
+        },
+        inputFormContent: {
+            marginBottom: '10px'
+        }
+    }
+
     return (
         <div className='container'>
-            <h3>Perfil</h3>
+            <div style={styles.titleHeader}>
+                <h3>Mi Perfil</h3>
+            </div>
             <div>
                 <div style={{ display: 'flex', width: '100%' }}>
                     <div style={{ flex: '1', marginRight: '10px' }}>
                         <img
-                            src="https://cdn.pixabay.com/photo/2012/04/26/19/43/profile-42914_960_720.png"
+                            src="https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG-Image.png"
                             alt="Imagen"
-                            style={{ width: '90%', height: '460px', marginTop: '5px', marginLeft: '10px' }}
+                            style={{ width: '100%', height: '400px', marginTop: '10px', marginLeft: '10px' }}
                         />
                     </div>
                 {
                     token && !isEditMode ? (
-                        <div style={{ flex: '1', marginLeft: '10px', marginTop: '50px' }}>
-                                <label> Nombre </label>
-                                    <input type="text" disabled value={user.name} className='form-control' />
-                                <br />
-                                <label> Apellido </label>
-                                    <input type="text" disabled value={user.last_name} className='form-control' />
-                                <br />
-                                <label> Email </label>
-                                    <input type="text" disabled value={user.email} className='form-control' />
-                                <br />
+                        <div style={styles.formContent}>
+                                <div style={{ marginBottom: '15px', marginTop: '20px' }}>
+                                    <label> Nombre </label>
+                                    <input style={styles.inputFormContent} type="text" disabled value={user.name} className='form-control' />
+                                </div>
+
+                                <div style={{ marginBottom: '15px' }}>
+                                    <label> Apellido </label>
+                                    <input style={styles.inputFormContent} type="text" disabled value={user.last_name} className='form-control' />
+                                </div>
+
+                                <div style={{ marginBottom: '60px' }}>
+                                    <label> Email </label>
+                                    <input style={styles.inputFormContent} type="text" disabled value={user.email} className='form-control' />
+                                </div>
+
                                 <a href='#' onClick={toggleEditMode} className='btn btn-primary form-control'>Editar</a>
+
                         </div>
 
                     ) : (
-                        <div style={{ flex: '1', marginLeft: '10px' }}>
+                        <div style={styles.editFormContent}>
                             <form style={{ width: '100%' }} onSubmit={updateUserHandle}>
-                                <label> Nombre </label>
+                                <div style={{ marginBottom: '10px', marginTop: '-10px' }}>
+                                    <label> Nombre </label>
                                     <input type="text" placeholder={user.name} onChange={(e) => setName(e.target.value)} className='form-control' />
-                                <br />
-                                <label> Apellido </label>
+                                </div>
+                                
+                                <div style={{ marginBottom: '10px' }}>
+                                    <label> Apellido </label>
                                     <input type="text" placeholder={user.last_name} onChange={(e) => setLastName(e.target.value)} className='form-control' />
-                                <br />
-                                <label> Email </label>
+                                </div>
+
+                                <div style={{ marginBottom: '10px' }}>
+                                    <label> Email </label>
                                     <input type="text" placeholder={user.email} onChange={(e) => setEmail(e.target.value)} className='form-control' />
-                                <br />
-                                <label> Contraseña </label>
+                                </div>
+
+                                <div style={{ marginBottom: '10px' }}>
+                                    <label> Contraseña </label>
                                     <input type="password" className='form-control' onChange={(e) => setPassword(e.target.value)} />
-                                <br />
-                                <label> Confirmar contraseña </label>
+                                </div>
+
+                                <div style={{ marginBottom: '10px' }}>
+                                    <label> Confirmar contraseña </label>
                                     <input type="password" className='form-control' onChange={(e) => setPasswordConfirmation(e.target.value)} />
-                                <br />
-                                <div style={{ display: 'flex', width: '100%' }}>
+                                </div>
+
+                                <div style={{ display: 'flex', width: '100%', marginTop: '15px' }}>
                                     <button type="submit" className='btn btn-primary form-control' style={{ flex: '1', marginRight: '5px' }}>Actualizar</button>
                                     <a href='#' onClick={toggleEditMode} className='btn btn-danger form-control' style={{ flex: '1', marginLeft: '5px' }}>Cancelar</a>
                                 </div>

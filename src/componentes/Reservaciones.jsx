@@ -3,6 +3,26 @@ import { useAuth } from './Contextos/AuthContext'
 import { API_URL } from '../config/config';
 import Swal from 'sweetalert2'
 
+const LoadingScreen = () => {
+    return (
+        <div style={{ 
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 9999,
+        }}>
+            <div style={{ color: 'white', fontSize: '24px' }}>Cargando...</div>
+        </div>
+    );
+};
+
+
 const Reservaciones = () => {
     const  { token } = useAuth();
     const {decodeToken} = useAuth()
@@ -13,6 +33,8 @@ const Reservaciones = () => {
     const [filteredReservations, setFilteredReservations] = useState([])
     const [filtersModal, setFiltersModal] = useState(false)
     const [searchTerm, setSearchTerm] = useState(false)
+    const [loading, setLoading] = useState(true);
+
     let responseData;
     let responseStatus;
     var styles = {
@@ -29,7 +51,11 @@ const Reservaciones = () => {
         headerContent: {
             marginTop: '15px',
             marginBottom: '15px',
-            paddingBottom: '15px'
+            padding: '5px',
+            textAlign: 'center',
+            backgroundColor: '#FFFFFF',
+            border: '2px solid #FFF5B3',
+            borderRadius: '50px 5px 50px 5px',
         },
         filterModalButton: {
             width: '25%'
@@ -41,10 +67,27 @@ const Reservaciones = () => {
             backgroundColor: '#85D8ED'
         },
         tableBody: {
-            textAlign: 'center'
+            textAlign: 'center',
+            backgroundColor: '#FFFFFF'
         },
         cellStyle: {
             padding: '6px'
+        },
+        nonReservationContent: {
+            marginTop: '50px',
+            marginBottom: '15px',
+            padding: '5px',
+            textAlign: 'center',
+            width: '102%',
+            fontSize: '20px',
+            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+            border: '2px solid #FFF5B3',
+            borderRadius: '5px 5px 5px 5px',
+            marginLeft: '-30px'
+        },
+        notFoundImage: {
+            height: '280px',
+            opacity: '0.2'
         }
     }
 
@@ -80,10 +123,12 @@ const Reservaciones = () => {
                 console.log("respuesta2: ", responseData);
                 if (tokenData.auth_role_id == 1) {
                     setReservations(responseData.data)
-                    setFilteredReservations(responseData.data)    
+                    setFilteredReservations(responseData.data)
+                    setLoading(false)   
                 } else {
                     setReservations(responseData.data.data)
                     setFilteredReservations(responseData.data.data)
+                    setLoading(false)
                 }
             }
         } catch (err) {
@@ -189,14 +234,18 @@ const Reservaciones = () => {
         return `${dia < 10 ? '0' : ''}${dia}-${mes < 10 ? '0' : ''}${mes}-${año}`;
     }
 
+    if (loading) {
+        return <LoadingScreen />;
+    }
+    
     return (
-        <div className='container' style={{ padding: '10px' }}>
-            <div className="d-flex justify-content-between align-items-center" style={styles.headerContent}>
+        <div className='container'>
+            <div style={styles.headerContent}>
                 {
                     token && tokenData.auth_role_id == 1 ? (
-                        <h3 className="m-0">Lista de reservaciones vigentes</h3>
+                        <h3>Lista de reservaciones vigentes</h3>
                     ) : (
-                        <h3 className="m-0">Mis reservaciones vigentes</h3>
+                        <h3>Mis reservaciones vigentes</h3>
                     )
                 }
                 
@@ -320,8 +369,9 @@ const Reservaciones = () => {
                         </tbody>
                     </table>
                 ) : (
-                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                    <div style={styles.nonReservationContent}>
                         <p>No se hallaron reservaciones vigentes</p>
+                        <img style={styles.notFoundImage} src="https://cdn-icons-png.flaticon.com/512/1178/1178479.png" alt="" />
                     </div>
                 )
             )

@@ -301,7 +301,12 @@ const Detalleslibro = () => {
         detailsContainer: {
             flex: '1',
             marginLeft: '15px',
-            marginTop: '40px'
+            marginTop: '20px',
+            backgroundColor: '#FFFFFF',
+            border: '2px solid #FFF5B3',
+            borderRadius: '5px 5px 5px 5px',
+            padding: '15px',
+            height: '500px'
         },
         header: {
             textAlign: 'center',
@@ -315,13 +320,14 @@ const Detalleslibro = () => {
         },
         imageContainer: {
             flex: '1',
-            marginRight: '10px',
+            /* marginRight: '10px', */
             minWidth: '420px',
+            marginLeft: '10px'
         },
         image: {
             width: '100%',
             height: '500px',
-            maxWidth: 'calc(100% - 20px)',
+            maxWidth: 'calc(100% - 0px)',
             marginTop: '25px',
         },
         footerContent: {
@@ -339,7 +345,7 @@ const Detalleslibro = () => {
             textAlign: 'center'
         },
         reservateButton: {
-            marginTop: '70px',
+            marginTop: '50px',
             fontSize: '22px'
         }
 
@@ -431,7 +437,7 @@ const Detalleslibro = () => {
                                 ) : (
                                     book.Reservation.user_id == tokenData.auth_user_id ? (
                                         <div style={styles.footerReservateContent}>
-                                        <button href="#" className='btn btn-danger form-control' style={styles.reservateButton} disabled>Ya reservado</button>
+                                        <button href="#" className='btn btn-success form-control' style={styles.reservateButton} disabled>Ya reservado</button>
                                     </div>
                                     ) : (<div style={styles.footerReservateContent}>
                                         <button href="#" className='btn btn-danger form-control' style={styles.reservateButton} disabled>No disponible</button>

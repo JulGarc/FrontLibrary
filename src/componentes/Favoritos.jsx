@@ -4,49 +4,77 @@ import { API_URL } from '../config/config';
 import Swal from 'sweetalert2'
 import { Link } from 'react-router-dom';
 
+const LoadingScreen = () => {
+    return (
+        <div style={{ 
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 9999,
+        }}>
+            <div style={{ color: 'white', fontSize: '24px' }}>Cargando...</div>
+        </div>
+    );
+};
 
 const Favoritos = () => {
     const  { token } = useAuth();
     const {decodeToken} = useAuth()
     const tokenData = decodeToken(token)
     const [favorites, setFavorites] = useState([])
+    const [loading, setLoading] = useState(true);
 
     let responseData;
     let responseStatus;
+   
+
     var styles = {
         cardContainer: {
             display: 'flex',
             flexWrap: 'wrap',
             justifyContent: 'flex-start',
-          },
-          card: {
+            marginLeft: '-50px',
+            width: '110%',
+            height: '400px',
+            overflowY: 'auto', // Hace el contenedor scrollable en dirección vertical
+            maxHeight: 'calc(100vh - 20px)', // Altura máxima igual a la altura de la ventana menos 100px
+            padding: '10px', // Añade un espacio interno para el scroll
+            scrollbarColor: 'lightgray transparent',
+        },
+        card: {
             display: 'flex',
             flexDirection: 'column',
             backgroundColor: '#fff',
             borderRadius: '8px',
             boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
             transition: 'transform 0.3s',
-            margin: '10px',
-            width: '210px',
-            heigth: '100px',
+            margin: '5px',
+            width: '220px',
+            heigth: '240px', // Corregí la propiedad 'heigth' a 'height'
             textAlign: 'center'
-          },
-          cardHover: {
+        },
+        cardHover: {
             transform: 'translateY(-5px)',
-          },
-          cardContent: {
+        },
+        cardContent: {
             padding: '10px',
-          },
-          cardTitle: {
+        },
+        cardTitle: {
             margin: 0,
             fontSize: '1.2rem',
             marginTop: '5px'
-          },
-          cardText: {
+        },
+        cardText: {
             marginTop: '10px',
             fontSize: '1rem',
-          },
-          cardButton: {
+        },
+        cardButton: {
             marginTop: '1px',
             marginBottom: '7px',
             padding: '10px 20px',
@@ -57,14 +85,38 @@ const Favoritos = () => {
             cursor: 'pointer',
             fontSize: '1rem',
             transition: 'background-color 0.3s',
-          },
-          cardButtonHover: {
+        },
+        cardButtonHover: {
             backgroundColor: '#0056b3',
-          }
+        },
+        titleHeader: {
+            marginTop: '15px',
+            marginBottom: '15px',
+            textAlign: 'center',
+            padding: '5px',
+            backgroundColor: '#FFFFFF',
+            border: '2px solid #FFF5B3',
+            borderRadius: '50px 5px 50px 5px',
+        },
+        nonReservationContent: {
+            marginTop: '50px',
+            marginBottom: '15px',
+            padding: '5px',
+            textAlign: 'center',
+            width: '102%',
+            fontSize: '20px',
+            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+            border: '2px solid #FFF5B3',
+            borderRadius: '5px 5px 5px 5px',
+            marginLeft: '-30px'
+        },
+        notFoundImage: {
+            height: '280px',
+            opacity: '0.2'
+        }
     }
-
-    //Validar el tipo de usuario para hacer la petición segun si es el admin o no
-    const getReservations = async () => {
+    
+    const getFavorites = async () => {
         try {
             const URI = `${API_URL}/favorites/user/${tokenData.auth_user_id}`
             const query = await fetch(`${URI}`, {
@@ -79,15 +131,15 @@ const Favoritos = () => {
             responseStatus = query.status
             
 
-            if (responseStatus != 200) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'ERROR',
-                    text: responseData.error
-                })
-            } else {
+            if (responseStatus == 200) {
                 console.log("respuesta: ", responseData);
                 setFavorites(responseData.data.data)
+                setLoading(false)
+            } else if(responseStatus == 404) {
+                setFavorites([])
+                setLoading(false)
+            } else {
+                console.log("error favoritos: ", responseData.error)
             }
         } catch (err) {
             Swal.fire({
@@ -119,13 +171,14 @@ const Favoritos = () => {
                     title: 'ERROR',
                     text: responseData.error
                 })
+                
             } else {
                 Swal.fire({
                     icon: 'success',
                     title: 'ÉXITO',
                     text: 'Favorito eliminado correctamente'
-                })
-                getReservations()
+                });
+                getFavorites()
             }
 
         } catch (err) {
@@ -157,13 +210,17 @@ const Favoritos = () => {
 
 
     useEffect(() => {
-        getReservations()
+        getFavorites()
     }, [])
+
+    if (loading) {
+        return <LoadingScreen />;
+    }
 
     return (
         <div className='container' style={{ padding: '10px' }}>
-            <div className="d-flex justify-content-between align-items-center" style={{ marginLeft: '35px', marginTop: '10px', marginBottom: '10px' }}>
-            <h3 className="m-1"m style={{ marginLeft: '25px' }}>Mis Favoritos</h3>
+            <div style={styles.titleHeader}>
+                <h3>Mis Favoritos</h3>
             </div>
         <ul>
           {
@@ -190,15 +247,15 @@ const Favoritos = () => {
                                 <a style={{ marginLeft: '13px' }} href="#" onClick={(event) => removeEventHandle(event, favorite.id)}><i className="fas fa-star"></i></a>
                             </h3>
                             <p style={styles.cardText}>{favorite.description}</p>
-                            {/* <button style={styles.cardButton}>Detalles</button> */}
                             <Link to={`/Libro/detalles/${favorite.Book.id}`} className='btn btn-primary'>Detalles</Link>
                         </div>
                         </div>
                     ))}
                 </div>
             ) : (
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                    <p>No tienes favoritos</p>
+                <div style={styles.nonReservationContent}>
+                    <p>Todavía no tienes favoritos</p>
+                    <img style={styles.notFoundImage} src="https://cdn-icons-png.flaticon.com/512/1178/1178479.png" alt="" />
                 </div>
             )
           }

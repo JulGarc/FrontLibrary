@@ -49,23 +49,72 @@ const Iniciarsesion=()=>{
             })
         }
     }
+
+    const styles = {
+        titleHeader: {
+            marginTop: '15px',
+            marginBottom: '15px',
+            textAlign: 'center',
+            padding: '5px',
+            backgroundColor: '#FFFFFF',
+            border: '2px solid #FFF5B3',
+            borderRadius: '50px 5px 50px 5px',
+        },
+        divContainer: {
+            display: 'flex',
+            flexDirection: 'row-reverse',
+            width: '100%'
+        },
+        formContent: {
+            flex: '1',
+            marginTop: '50px',
+            fontSize: '18px',
+            padding: '30px',
+            height: '300px',
+            backgroundColor: '#FFFFFF',
+            border: '2px solid #FFF5B3',
+            borderRadius: '10px 10px 10px 10px',
+        },
+        image: {
+            width: '100%',
+            height: '420px',
+            border: '2px solid #FFF5B3',
+            borderRadius: '10px 10px 10px 10px',
+        },
+        imgContainer: {
+            flex: '1',
+            textAlign: 'center',
+            marginRight: '20px'
+        },
+        container: {
+            
+        }
+    }
     return(
-        <div>
-        <div className="container">
-            <h1>Iniciar sesion.</h1>
-            <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                    <label htmlFor="email" className="form-label">Correo</label>
-                    <input type="email" className="form-control" id="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        <div className="container" style={styles.container}>
+            <div style={styles.titleHeader}>
+                <h3>Iniciar sesión</h3>
+            </div>
+            <div style={styles.divContainer}>
+                <div style={styles.formContent}>
+                <form onSubmit={handleSubmit}>
+                    <div className="mb-3" style={{ marginTop: '0px' }}>
+                        <label htmlFor="email" className="form-label">Correo</label>
+                        <input type="email" className="form-control" id="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="password" className="form-label">Contraseña</label>
+                        <input type="password" className="form-control" id="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                    </div>
+                    <br />
+                    <button type="submit" className="btn btn-primary form-control">Iniciar sesión</button>
+                </form>
                 </div>
-                <div className="mb-3">
-                    <label htmlFor="password" className="form-label">Contraseña</label>
-                    <input type="password" className="form-control" id="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+
+                <div style={styles.imgContainer}>
+                    <img src="https://c4.wallpaperflare.com/wallpaper/89/796/11/book-reading-backgrounds-inspiration-download-3840x2400-book-wallpaper-preview.jpg" alt="imagen" style={styles.image} />
                 </div>
-                <button type="submit" className="btn btn-primary">Iniciar sesion</button>
-            </form>
-        </div>
-        
+            </div>
         </div>
     )
 
