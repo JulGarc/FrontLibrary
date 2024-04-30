@@ -1,53 +1,47 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
-import { API_URL } from '../config/config'
-import { useAuth } from './Contextos/AuthContext'
+import React, { useEffect, useState } from 'react';
+import { Box, Text, Grid } from '@chakra-ui/react';
+import { API_URL } from '../config/config';
+import { useAuth } from './Contextos/AuthContext';
+import styles from '../estilos/libros.module.css'; 
 
 const Libros = () => {
-    const { token } = useAuth()
-    const {decodeToken} = useAuth()
-    const tokenData = decodeToken(token)
-    const [listaLibros, setListaLibros] = useState([])
-    const [tituloLibro, setTituloLibro] = useState(null)
-    const [autorLibro, setAutorLibro] = useState(null)
+    const { token, decodeToken } = useAuth();
+    const tokenData = decodeToken(token);
+    const [listaLibros, setListaLibros] = useState([]);
+
     useEffect(() => {
-        obtenerLibros()
+        obtenerLibros();
     }, []);
 
     const obtenerLibros = async () => {
         try {
-            const data = {
-                book_title: tituloLibro,
-                book_author: autorLibro
-            }
-            const response = await axios.get(`${API_URL}/books`, data);
-            if (response.status === 200) {
-                console.log("data libros2: ", typeof response)
-                setListaLibros(response.data)
-            } else {
-                console.log("error: ", response)
-            }
+            const response = await fetch(`${API_URL}/books`);
+            const datos = await response.json();
+            setListaLibros(datos.data);
         } catch (error) {
-            console.error('Error de servidor', error);
+            console.error('Error de servidor:', error);
         }
-    }
-    
+    };
+
     return (
-        <div className='container' style={{ justifyContent: 'center', alignItems: 'center'}}>
-          <h1>Componente libros</h1>
-          {token ? (
-            <>
-              <div key={1}><p>Usuario autenticado. Token: {token}</p></div>
-              <div key={2}><p>Id de usuario: {tokenData.auth_user_id}</p></div>
-              <div key={3}><p>Rol de usuario: {tokenData.auth_role_id}</p></div>
-              <div key={4}><p>Emisión del token: {tokenData.auth_token_iat}</p></div>
-              <div key={5}><p>Expiración del token: {tokenData.auth_token_exp}</p></div>
-            </>
-          ) : (
-            <p>Usuario no autenticado.</p>
-          )}
-        </div>
-      );      
+        <Box p={8}>
+            <Text fontSize="4xl" textAlign="center" mb={8} fontWeight="bold">Biblioteca</Text>
+            <Grid templateColumns="repeat(auto-fill, minmax(200px, 1fr))" gap={8}>
+                {listaLibros.map(libro => (
+                    <div key={libro.id} className={styles.libroContainer}> {/* Aplica la clase de estilo CSS */}
+                        <img className={styles.imagenLibro} src={libro.cover_page} alt={libro.title} />
+                        <Box p={6}>
+                            <Text className={styles.tituloLibro}>{libro.title}</Text>
+                            <Text className={styles.autorLibro}>Autor: {libro.author}</Text>
+                            <button className={styles.buttonLibro} disabled={libro.Reservations?.length > 0}>
+                                {libro.Reservations?.length > 0 ? "No disponible" : "Reservar"}
+                            </button>
+                        </Box>
+                    </div>
+                ))}
+            </Grid>
+        </Box>
+    );
 }
 
-export default Libros
+export default Libros;

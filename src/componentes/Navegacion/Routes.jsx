@@ -1,16 +1,16 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./Navbar";
-import Inicio from "../../Inicio";
-import Iniciarsesion from "../../Iniciarsesion";
-import Registrarse from "../../Registrarse";
-import Libros from "../../Libros";
-import Crearlibro from "../../Crearlibro";
-import Usuarios from "../../Usuarios";
-import Reservaciones from "../../Reservaciones";
-import Favoritos from "../../Favoritos";
-import Perfil from "../../Perfil";
-import Detalleslibro from "../../Detalleslibro";
+import Inicio from "../Inicio";
+import Iniciarsesion from "../Iniciarsesion";
+import Registrarse from "../Registrarse";
+import Libros from "../Libros";
+import Crearlibro from "../Crearlibro";
+import Usuarios from "../Usuarios";
+import Reservaciones from "../Reservaciones";
+import Favoritos from "../Favoritos";
+import Perfil from "../Perfil";
+import Detalleslibro from "../Detalleslibro";
 
 const AppRoutes = () => {
   return (
