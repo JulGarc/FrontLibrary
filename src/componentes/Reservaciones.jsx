@@ -38,6 +38,15 @@ const Reservaciones = () => {
     let responseData;
     let responseStatus;
     var styles = {
+        titleHeader: {
+            marginTop: '15px',
+            marginBottom: '15px',
+            textAlign: 'center',
+            padding: '5px',
+            backgroundColor: '#FFFFFF',
+            border: '2px solid #FFF5B3',
+            borderRadius: '5px 5px 5px 5px',
+        },
         tableResponsive: {
             overflowX: 'auto',
             width: '103%',
@@ -52,7 +61,6 @@ const Reservaciones = () => {
             marginTop: '15px',
             marginBottom: '15px',
             padding: '5px',
-            textAlign: 'center',
             backgroundColor: '#FFFFFF',
             border: '2px solid #FFF5B3',
             borderRadius: '50px 5px 50px 5px',
@@ -88,6 +96,13 @@ const Reservaciones = () => {
         notFoundImage: {
             height: '280px',
             opacity: '0.2'
+        },
+        filterContent: {
+            backgroundColor: '#FFFFFF',
+            border: '2px solid #FFF5B3',
+            borderRadius: '5px 5px 5px 5px',
+            marginBottom: '10px',
+            padding: '10px'
         }
     }
 
@@ -240,7 +255,23 @@ const Reservaciones = () => {
     
     return (
         <div className='container'>
-            <div style={styles.headerContent}>
+            <div className="d-flex justify-content-between align-items-center" style={styles.titleHeader}>
+                {
+                    token && tokenData.auth_role_id == 1 ? (
+                        <h3>Lista de reservaciones vigentes</h3>
+                    ) : (
+                        <h3>Mis reservaciones vigentes</h3>
+                    )
+                }
+                {
+                    token && tokenData.auth_role_id == 1 ? (
+                        <button className='btn btn-info' onClick={toggleFiltersModal} style={styles.filterButton}>
+                            { filtersModal ? ("Ocultar filtros") : ("Mostrar filtros") }
+                        </button>
+                    ) : (null)
+                }
+            </div>
+            {/* <div style={styles.headerContent}>
                 {
                     token && tokenData.auth_role_id == 1 ? (
                         <h3>Lista de reservaciones vigentes</h3>
@@ -256,10 +287,10 @@ const Reservaciones = () => {
                         </button>
                     ) : (null)
                 }
-            </div>
+            </div> */}
             {
                 filtersModal && token && tokenData.auth_role_id == 1 ? (
-                    <div>
+                    <div style={styles.filterContent}>
                         <h3>Filtros</h3>
                         <div style={styles.filtersModal}>
                             <div className="row">

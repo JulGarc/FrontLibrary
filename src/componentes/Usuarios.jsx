@@ -21,27 +21,6 @@ const Usuarios = () => {
     var responseData
     var responseStatus
 
-    var styles = {
-        tableResponsive: {
-            overflowX: 'auto',
-            width: '100%'
-        },
-        filterButton: {
-            width: '200px'
-        },
-        headerContent: {
-            marginTop: '15px',
-            marginBottom: '15px',
-            paddingBottom: '15px'
-        },
-        filterModalButton: {
-            width: '25%'
-        },
-        filtersModal: {
-            paddingBottom: '15px'
-        }
-    }
-
     const getUsers = async() => {
         try {
             const query = await fetch(`${URI}`, {
@@ -103,9 +82,56 @@ const Usuarios = () => {
         setEmail('')
     }
 
+    var styles = {
+        titleHeader: {
+            marginTop: '15px',
+            marginBottom: '15px',
+            textAlign: 'center',
+            padding: '5px',
+            backgroundColor: '#FFFFFF',
+            border: '2px solid #FFF5B3',
+            borderRadius: '5px 5px 5px 5px',
+        },
+        tableResponsive: {
+            overflowX: 'auto',
+            width: '103%',
+            marginLeft: '-30px'
+        },
+        filterButton: {
+            width: '200px'
+        },
+        headerContent: {
+            marginTop: '15px',
+            marginBottom: '15px',
+            paddingBottom: '15px'
+        },
+        filterModalButton: {
+            width: '25%'
+        },
+        filtersModal: {
+            paddingBottom: '15px',
+            
+        },
+        tableHead: {
+            backgroundColor: '#85D8ED',
+            textAlign: 'center',
+        },
+        tableBody: {
+            textAlign: 'center',
+            backgroundColor: '#FFFFFF'
+        },
+        filterContent: {
+            backgroundColor: '#FFFFFF',
+            border: '2px solid #FFF5B3',
+            borderRadius: '5px 5px 5px 5px',
+            marginBottom: '10px',
+            padding: '10px'
+        }
+    }
+
     return (
         <div className='container'>
-            <div className="d-flex justify-content-between align-items-center" style={styles.headerContent}>
+            <div className="d-flex justify-content-between align-items-center" style={styles.titleHeader}>
                 <h1 className="m-0">Lista de Usuarios</h1>
                 <button className='btn btn-info' onClick={toggleFiltersModal} style={styles.filterButton}>
                     {
@@ -115,8 +141,8 @@ const Usuarios = () => {
             </div>
             {
                 filtersModal ? (
-                    <div>
-                        <h3>Filtros</h3>
+                    <div style={styles.filterContent}>
+                        <h3 style={{ textAlign: 'center' }}>Filtros</h3>
                         <div style={styles.filtersModal}>
                             <div className="row">
                                 <div className="col">
@@ -139,7 +165,7 @@ const Usuarios = () => {
                                 </div>
                             </div>
                             <div className="d-flex justify-content-end">
-                                <button type="button" className="btn btn-primary me-2" onClick={filterUsers} style={styles.filterModalButton}>Aplicar</button>
+                                <button type="button" className="btn btn-success me-2" onClick={filterUsers} style={styles.filterModalButton}>Aplicar</button>
                                 <button type="button" className="btn btn-primary" onClick={clearFilters} style={styles.filterModalButton}>Limpiar filtro</button>
                             </div>
                         </div>
@@ -151,9 +177,9 @@ const Usuarios = () => {
             searchTerm ? (
                 filteredUsers.length >= 1 ? (
                     <table style={styles.tableResponsive}>
-                        <thead>
+                        <thead style={styles.tableHead}>
                             <tr>
-                                <th>Nombre</th>
+                                <th >Nombre</th>
                                 <th>Apellido</th>
                                 <th>Correo</th>
                                 <th>Estado</th>
@@ -161,7 +187,7 @@ const Usuarios = () => {
                             </tr>
                         </thead>
 
-                        <tbody>
+                        <tbody style={styles.tableBody}>
                             {
                                 filteredUsers.map(user => (
                                     <tr key={user.id}>
@@ -190,7 +216,7 @@ const Usuarios = () => {
                 )
             ) : (
                 <table style={styles.tableResponsive}>
-                        <thead>
+                        <thead style={styles.tableHead}>
                             <tr>
                                 <th>Nombre</th>
                                 <th>Apellido</th>
@@ -200,7 +226,7 @@ const Usuarios = () => {
                             </tr>
                         </thead>
 
-                        <tbody>
+                        <tbody style={styles.tableBody}>
                             {
                                 filteredUsers.map(user => (
                                     <tr key={user.id}>
