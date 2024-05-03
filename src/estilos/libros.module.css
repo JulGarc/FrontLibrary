@@ -1,0 +1,67 @@
+.libroContainer {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+}
+
+.libroContainer:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.imagenLibro {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+.tituloLibro {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.autorLibro {
+    font-size: 1rem;
+    color: gray;
+    margin-bottom: 1rem;
+}
+
+.buttonLibro {
+    width: 100%;
+    font-size: 1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    background-color: #4CAF50; 
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.buttonLibro:hover {
+    background-color: #45a049; 
+}
+.searchBar {
+    margin-bottom: 20px;
+}
+
+.searchInput {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    max-width: 300px;
+    font-size: 16px;
+}
+
+.searchInput:focus {
+    outline: none;
+    border-color: #3182ce;
+}
