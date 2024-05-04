@@ -117,6 +117,7 @@ const Libros = () => {
             if (responseStatus != 200) {
                 console.error("favoritos no obtenidos: ", responseData.error)
             } else {
+                setFavorites(responseData.data.data)
                 setUserFavoritesArray(responseData.data.userFavoritesArray)
             }
         } catch (err) {
@@ -161,6 +162,10 @@ const Libros = () => {
                     icon: 'success',
                     title: 'ÉXITO',
                     text: 'Favorito eliminado correctamente'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        location.reload(); // Recarga la página
+                    }
                 })
                 getUserFavorites()
             }

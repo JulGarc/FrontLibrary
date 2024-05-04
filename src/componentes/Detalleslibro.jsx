@@ -107,6 +107,7 @@ const Detalleslibro = () => {
             if (responseStatus != 200) {
                 console.error("favoritos no obtenidos: ", responseData.error)
             } else {
+                setFavorites(responseData.data.data)
                 setUserFavoritesArray(responseData.data.userFavoritesArray)
             }
         } catch (err) {
@@ -148,6 +149,7 @@ const Detalleslibro = () => {
     }
 
     const removeFavorite = async (bookId) => {
+        console.log("favorites", favorites)
         let favoriteId;
         for (const key in favorites) {
             if (favorites.hasOwnProperty(key) && favorites[key].book_id === bookId) {
