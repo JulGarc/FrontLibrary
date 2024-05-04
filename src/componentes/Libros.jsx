@@ -29,7 +29,7 @@ const Libros = () => {
         getUserFavorites(),
         getUserReservations();
     }, []);
-
+    
     const obtenerLibros = async () => {
         try {
             const response = await fetch(`${API_URL}/books`);
@@ -105,7 +105,14 @@ const Libros = () => {
         }
     }
     
-    const removeFavorite = async (favoriteId) => {
+    const removeFavorite = async (bookId) => {
+        let favoriteId;
+        for (const key in favorites) {
+            if (favorites.hasOwnProperty(key) && favorites[key].book_id === bookId) {
+                favoriteId = favorites[key].id
+            }
+            
+        }
         try {
             const URI = `${API_URL}/favorites/delete/${favoriteId}`
             const query = await fetch(`${URI}`, {
@@ -126,14 +133,13 @@ const Libros = () => {
                     title: 'ERROR',
                     text: responseData.error
                 })
-                
             } else {
                 Swal.fire({
                     icon: 'success',
                     title: 'ÉXITO',
                     text: 'Favorito eliminado correctamente'
-                });
-                getFavorites()
+                })
+                getUserFavorites()
             }
 
         } catch (err) {
@@ -292,7 +298,7 @@ const Libros = () => {
                                 )
                             }
                              {
-                                    !libro.favorites ? (
+                                    token ? (
                                         userFavoritesArray.includes(libro.id) ? (
                                             <a style={{ marginLeft: '13px' }} href="#" onClick={(event) => removeFavoriteEventHandle(event, libro.id)}><i className="fas fa-star"></i></a>
                                         ) : (
