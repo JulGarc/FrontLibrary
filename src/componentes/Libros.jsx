@@ -83,6 +83,10 @@ const Libros = () => {
                         >
                             {librosReservados.includes(libro.id) ? "No disponible" : "Reservar"}
                         </button>
+<<<<<<< Updated upstream
+=======
+                        <h1>hola mundo123</h1>
+>>>>>>> Stashed changes
                     </Box>
                 </div>
             ))}
