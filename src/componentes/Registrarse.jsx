@@ -50,6 +50,10 @@ const Registrarse = () => {
                     icon: 'success',
                     title: 'ÉXITO',
                     text: "Registro completado con éxito"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        location.reload(); // Recarga la página
+                    }
                 })
             } else {
                 Swal.fire({
