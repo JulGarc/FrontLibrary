@@ -3,6 +3,7 @@ import { Box, Text, Grid } from '@chakra-ui/react';
 import { API_URL } from '../config/config';
 import { useAuth } from './Contextos/AuthContext';
 import styles from '../estilos/libros.module.css';
+import Swal from 'sweetalert2'
 
 const Libros = () => {
     const { token, decodeToken } = useAuth();
@@ -11,9 +12,14 @@ const Libros = () => {
     const [filtroBusqueda, setFiltroBusqueda] = useState('');
     const [mensajeReserva, setMensajeReserva] = useState('');
     const [librosReservados, setLibrosReservados] = useState([]);
+    const [userReservationsArray, setUserReservationsArray] = useState([])
+    const [reservations, setReservations] = useState([])
+    let responseData;
+    let responseStatus;
 
     useEffect(() => {
         obtenerLibros();
+        getUserReservations();
     }, []);
 
     const obtenerLibros = async () => {
@@ -33,6 +39,37 @@ const Libros = () => {
         );
     };
 
+    const getUserReservations = async () => {
+        const RESERVATIONS_URI = `${API_URL}/reservations`
+        try {
+            const query = await fetch(`${RESERVATIONS_URI}/user/${tokenData.auth_user_id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token
+                }
+            })
+
+            responseData = await query.json()
+            responseStatus = query.status
+            
+
+            if (responseStatus != 200) {
+                console.error("favoritos no obtenidos: ", responseData.error)
+            } else {
+                console.log(responseData)
+                setUserReservationsArray(responseData.data.userReservationsArray)
+                setReservations(responseData.data.data)
+            }
+        } catch (err) {
+            Swal.fire({
+                icon: 'error',
+                title: 'ERROR',
+                text: err.message
+            })
+        }
+    }
+
     const reservarLibro = async (idbook) => {
         try {
             const response = await fetch(`${API_URL}/reservations/create/${idbook}`, {
@@ -41,15 +78,22 @@ const Libros = () => {
                     'Content-Type': 'application/json',
                     'Authorization': token 
                 },
-                body: JSON.stringify({ user_id: tokenData.id }) 
+                /* body: JSON.stringify({ user_id: tokenData.id }) */ 
             });
             const data = await response.json();
             if (response.ok) {
-                setMensajeReserva('¡Libro reservado exitosamente!');
-                // Agregar el ID del libro reservado a la lista de libros reservados
-                setLibrosReservados([...librosReservados, idbook]);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Exito',
+                    text: "Libro reservado correctamente"
+                })
+                getUserReservations()
             } else {
-                setMensajeReserva(data.message || 'Error al reservar el libro');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ERROR',
+                    text: responseData.error
+                })
             }
         } catch (error) {
             console.error('Error de red:', error);
@@ -76,17 +120,29 @@ const Libros = () => {
                     <Box p={6}>
                         <Text className={styles.tituloLibro}>{libro.title}</Text>
                         <Text className={styles.autorLibro}>Autor: {libro.author}</Text>
-                        <button
-                            className={styles.buttonLibro}
-                            disabled={librosReservados.includes(libro.id)} // Deshabilitar si el libro está en la lista de reservados
-                            onClick={() => reservarLibro(libro.id)}
-                        >
-                            {librosReservados.includes(libro.id) ? "No disponible" : "Reservar"}
-                        </button>
-<<<<<<< Updated upstream
-=======
-                        <h1>hola mundo123</h1>
->>>>>>> Stashed changes
+                        {
+                            !libro.Reservation ? (
+                                userReservationsArray.includes(libro.id) ? (
+                                    <div style={styles.footerReservateContent}>
+                                        <a href="#" onClick={(event) => addReservationEventHandle(event, libro.id)} className='btn btn-primary form-control' style={styles.reservateButton}>Ya resevado</a>
+                                    </div>
+                                ) : (
+                                    <div style={styles.footerReservateContent}>
+                                        {/* <a href="#" className='btn btn-primary form-control' style={styles.reservateButton}>Reservar</a> */}
+                                        <a href="#" className='btn btn-primary form-control' style={styles.reservateButton} onClick={(event) => reservarLibro(libro.id)}>Reservar</a>
+                                    </div> 
+                                )
+                                
+                            ) : (
+                                libro.Reservation.user_id == tokenData.auth_user_id ? (
+                                    <div style={styles.footerReservateContent}>
+                                    <button href="#" className='btn btn-success form-control' style={styles.reservateButton} disabled>Ya reservado</button>
+                                </div>
+                                ) : (<div style={styles.footerReservateContent}>
+                                    <button href="#" className='btn btn-danger form-control' style={styles.reservateButton} disabled>No disponible</button>
+                                </div>)
+                            )
+                        }
                     </Box>
                 </div>
             ))}
