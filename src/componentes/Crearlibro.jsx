@@ -70,32 +70,60 @@ const Crearlibro = () => {
             })
         }
     }
+
+    const styles = {
+        titleHeader: {
+            marginTop: '15px',
+            marginBottom: '10px',
+            textAlign: 'center',
+            padding: '5px',
+            backgroundColor: '#FFFFFF',
+            border: '2px solid #FFF5B3',
+            borderRadius: '50px 5px 50px 5px',
+        },
+        container: {
+            height: '90.5vh', // Establece el alto del contenedor al 100% del alto de la ventana
+            display: 'flex',
+            flexDirection: 'column',
+        },
+        formContent: {
+            backgroundColor: '#FFFFFF',
+            border: '2px solid #FFF5B3',
+            borderRadius: '5px 5px 5px 5px',
+            padding: '10px'
+        }
+    }
+
     return (
-        <div className='container'>
-            <h1>Crear Libro</h1>
+        <div className='container' style={styles.container}>
+            <div style={styles.titleHeader}>
+                <h3>Crear Libro</h3>
+            </div>
+            <div style={styles.formContent}>
             <form onSubmit={store}>
-            <div className="mb-3">
+                <div className="mb-1">
                     <label htmlFor="title" className="form-label">Título<span style={{ color: 'red', marginLeft: '5px' }}>*</span></label>
                     <input type="text" className="form-control" id="title" value={title} onChange={(e) => setTitle(e.target.value)} required />
                 </div>
-                <div className="mb-3">
+                <div className="mb-1">
                     <label htmlFor="author" className="form-label">Autor<span style={{ color: 'red', marginLeft: '5px' }}>*</span></label>
                     <input type="text" className="form-control" id="author" value={author} onChange={(e) => setAuthor(e.target.value)} required />
                 </div>
-                <div className="mb-3">
+                <div className="mb-1">
                     <label htmlFor="description" className="form-label">Descripción<span style={{ color: 'red', marginLeft: '5px' }}>*</span></label>
                     <textarea type="text" className="form-control" id="description" value={description} onChange={(e) => setDescription(e.target.value)} required />
                 </div>
-                <div className="mb-3">
+                <div className="mb-1">
                     <label htmlFor="cover_page" className="form-label">URL de portada</label>
                     <input type="text" className="form-control" id="coverPage" value={coverPage} onChange={(e) => setCoverPage(e.target.value)}/>
                 </div>
-                <div className="mb-3">
+                <div className="mb-2">
                     <label htmlFor="year" className="form-label">Año de lanzamiento</label>
                     <input type="number" className="form-control" id="year" value={year} onChange={(e) => setYear(e.target.value)} required />
                 </div>
                 <button type="submit" className="btn btn-primary form-control">Crear</button>
             </form>
+            </div>
         </div>
     )
 }
