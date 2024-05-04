@@ -106,11 +106,16 @@ const Registrarse = () => {
         elementStyle: {
             marginTop: '-10px',
             marginBottom: '15px'
-        }
+        },
+        container: {
+            height: '90.7vh', // Establece el alto del contenedor al 100% del alto de la ventana
+            display: 'flex',
+            flexDirection: 'column',
+        },
     }
 
     return (
-        <div className="container">
+        <div className="container" style={styles.container}>
             <div style={styles.titleHeader}>
                 <h3>Registrarse</h3>
             </div>

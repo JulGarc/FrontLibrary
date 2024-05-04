@@ -126,11 +126,16 @@ const Usuarios = () => {
             borderRadius: '5px 5px 5px 5px',
             marginBottom: '10px',
             padding: '10px'
-        }
+        },
+        container: {
+            height: '89.5vh', // Establece el alto del contenedor al 100% del alto de la ventana
+            display: 'flex',
+            flexDirection: 'column',
+        },
     }
 
     return (
-        <div className='container'>
+        <div className='container' style={styles.container}>
             <div className="d-flex justify-content-between align-items-center" style={styles.titleHeader}>
                 <h1 className="m-0">Lista de Usuarios</h1>
                 <button className='btn btn-info' onClick={toggleFiltersModal} style={styles.filterButton}>

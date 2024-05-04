@@ -16,6 +16,7 @@ const LoadingScreen = () => {
             justifyContent: 'center',
             alignItems: 'center',
             zIndex: 9999,
+            backgroundImage: 'url("https://images7.alphacoders.com/132/1326364.png")'
         }}>
             <div style={{ color: 'white', fontSize: '24px' }}>Cargando...</div>
         </div>
@@ -103,6 +104,11 @@ const Reservaciones = () => {
             borderRadius: '5px 5px 5px 5px',
             marginBottom: '10px',
             padding: '10px'
+        },
+        container: {
+            height: '89.5vh', // Establece el alto del contenedor al 100% del alto de la ventana
+            display: 'flex',
+            flexDirection: 'column',
         }
     }
 
@@ -254,7 +260,7 @@ const Reservaciones = () => {
     }
     
     return (
-        <div className='container'>
+        <div className='container' style={styles.container}>
             <div className="d-flex justify-content-between align-items-center" style={styles.titleHeader}>
                 {
                     token && tokenData.auth_role_id == 1 ? (

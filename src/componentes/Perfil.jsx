@@ -176,11 +176,16 @@ const Perfil = () => {
         },
         inputFormContent: {
             marginBottom: '10px'
-        }
+        },
+        container: {
+            height: '89.5vh', // Establece el alto del contenedor al 100% del alto de la ventana
+            display: 'flex',
+            flexDirection: 'column',
+        },
     }
 
     return (
-        <div className='container'>
+        <div className='container' style={styles.container}>
             <div style={styles.titleHeader}>
                 <h3>Mi Perfil</h3>
             </div>

@@ -87,8 +87,10 @@ const Iniciarsesion=()=>{
             marginRight: '20px'
         },
         container: {
-            
-        }
+            height: '90.7vh', // Establece el alto del contenedor al 100% del alto de la ventana
+            display: 'flex',
+            flexDirection: 'column',
+        },
     }
     return(
         <div className="container" style={styles.container}>
