@@ -121,7 +121,7 @@ const Reservaciones = () => {
             URI = `${API_URL}/reservations/user/${tokenData.auth_user_id}`
         }
         try {
-
+            console.log(URI)
             const query = await fetch(`${URI}`, {
                 method: 'GET',
                 headers: {
@@ -131,6 +131,7 @@ const Reservaciones = () => {
             })
 
             responseData = await query.json()
+            console.log("responseSinSetear: ", responseData)
             responseStatus = query.status
             
 
@@ -149,6 +150,8 @@ const Reservaciones = () => {
                 } else {
                     setReservations(responseData.data.data)
                     setFilteredReservations(responseData.data.data)
+                    console.log("userActual: ", tokenData.auth_role_id)
+                    console.log("data: ", reservations)
                     setLoading(false)
                 }
             }
@@ -397,7 +400,7 @@ const Reservaciones = () => {
                                     <td style={styles.cellStyle}>{dateFormat(reservation.createdAt)}</td>
                                     {
                                         token && tokenData.auth_role_id != 1 ? (
-                                            <a href='#' onClick={(event) => removeEventHandle(event, reservation.id)} className='btn btn-warning btn-sm' style={{ marginTop: '5px', marginBottom: '5px' }}>Devolver</a>
+                                            <td><a href='#' onClick={(event) => removeEventHandle(event, reservation.id)} className='btn btn-warning btn-sm' style={{ marginTop: '5px', marginBottom: '5px' }}>Devolver</a></td>
                                         ) : (null)
                                     }
                                 </tr>

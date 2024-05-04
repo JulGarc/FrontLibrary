@@ -297,11 +297,12 @@ const Detalleslibro = () => {
         container: {
             display: 'flex',
             justifyContent: 'center',
+            height: '90.7vh'
         },
         detailsContainer: {
             flex: '1',
             marginLeft: '15px',
-            marginTop: '20px',
+            marginTop: '25px',
             backgroundColor: '#FFFFFF',
             border: '2px solid #FFF5B3',
             borderRadius: '5px 5px 5px 5px',
@@ -335,7 +336,8 @@ const Detalleslibro = () => {
             padding: '6px',
             borderRadius: '5px',
             height: '125px',
-            marginBottom: '15px'
+            marginBottom: '20px',
+            marginTop: '-15px'
         },
         footerReservateContent: {
             padding: '6px',
