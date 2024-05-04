@@ -7,6 +7,26 @@ import Swal from 'sweetalert2';
 import { Link } from 'react-router-dom';
 
 const FAVORITES_URI = `${API_URL}/favorites/`
+const LoadingScreen = () => {
+    return (
+        <div style={{ 
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundImage: 'url("https://images7.alphacoders.com/132/1326364.png")',
+            zIndex: 9999,
+        }}>
+            <div style={{ color: 'white', fontSize: '24px' }}>Cargando...</div>
+        </div>
+    );
+};
+
 
 const Libros = () => {
     const { token, decodeToken } = useAuth();
@@ -19,6 +39,7 @@ const Libros = () => {
     const [reservations, setReservations] = useState([]);
     const [favorites, setFavorites] = useState([])
     const [userFavoritesArray, setUserFavoritesArray] = useState([])
+    const [loading, setLoading] = useState(true);
 
     let responseData;
     let responseStatus;
@@ -26,8 +47,10 @@ const Libros = () => {
     
     useEffect(() => {
         obtenerLibros();
-        getUserFavorites(),
-        getUserReservations();
+        if (token) {
+            getUserFavorites(),
+            getUserReservations();
+        }
     }, []);
     
     const obtenerLibros = async () => {
@@ -185,6 +208,10 @@ const Libros = () => {
                     icon: 'success',
                     title: 'Exito',
                     text: "Libro reservado correctamente"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        location.reload(); // Recarga la página
+                    }
                 });
                 getUserReservations();
             } else {
@@ -258,7 +285,7 @@ const Libros = () => {
 
     return (
         <Box p={8}>
-            <Text fontSize="4xl" textAlign="center" mb={8} fontWeight="bold">Biblioteca</Text>
+            <Text fontSize="4xl" textAlign="center" mb={8} fontWeight="bold" className={styles.titleHeader}>Biblioteca</Text>
             <div className={styles.searchBar}>
                 <input
                     className={styles.searchInput}
@@ -273,31 +300,9 @@ const Libros = () => {
                     <div key={`${libro.id}-${index}`} className={styles.libroContainer}>
                         <img className={styles.imagenLibro} src={libro.cover_page} alt={libro.title} />
                         <Box p={6}>
-                            <Text className={styles.tituloLibro}>{libro.title}</Text>
-                            <Text className={styles.autorLibro}>Autor: {libro.author}</Text>
-                            {
-                                !libro.Reservation ? (
-                                    userReservationsArray.includes(libro.id) ? (
-                                        <div style={styles.footerReservateContent}>
-                                            <a href="#" onClick={(event) => addReservationEventHandle(event, libro.id)} className='btn btn-primary form-control' style={styles.reservateButton}>Ya resevado</a>
-                                        </div>
-                                    ) : (
-                                        <div style={styles.footerReservateContent}>
-                                            <a href="#" className='btn btn-primary form-control' style={styles.reservateButton} onClick={(event) => reservarLibro(libro.id)}>Reservar</a>
-                                        </div>
-                                    )
-    
-                                ) : (
-                                    libro.Reservation.user_id === tokenData.auth_user_id ? (
-                                        <div style={styles.footerReservateContent}>
-                                            <button href="#" className='btn btn-success form-control' style={styles.reservateButton} disabled>Ya reservado</button>
-                                        </div>
-                                    ) : (<div style={styles.footerReservateContent}>
-                                        <button href="#" className='btn btn-danger form-control' style={styles.reservateButton} disabled>No disponible</button>
-                                    </div>)
-                                )
-                            }
-                             {
+                            <Text className={styles.tituloLibro}>
+                                {libro.title}
+                                {
                                     token ? (
                                         userFavoritesArray.includes(libro.id) ? (
                                             <a style={{ marginLeft: '13px' }} href="#" onClick={(event) => removeFavoriteEventHandle(event, libro.id)}><i className="fas fa-star"></i></a>
@@ -305,9 +310,42 @@ const Libros = () => {
                                             <a style={{ marginLeft: '13px' }} href="#" onClick={(event) => addFavoriteEventHandle(event, libro.id)}><i className="far fa-star"></i></a>
                                         )
                                     ) : (null)
-                                }
-                             <p style={styles.cardText}>{libro.description}</p>
-                            <Link to={`/Libro/detalles/${libro.id}`} className='btn btn-primary'>Detalles</Link>
+                            }
+                            </Text>
+                            <Text className={styles.autorLibro}>Autor: {libro.author}</Text>
+                            <div>
+                            {
+                                !libro.Reservation ? (
+                                    <div>
+                                        {
+                                            token ? (
+                                                userReservationsArray.includes(libro.id) ? (
+                                                    <a href="#" onClick={(event) => addReservationEventHandle(event, libro.id)} className='btn btn-primary form-control' style={styles.reservateButton}>Ya resevado</a>
+                                            ) : (
+                                                <a href="#" className='btn btn-primary form-control' style={styles.reservateButton} onClick={(event) => reservarLibro(libro.id)}>Reservar</a>
+                                            )
+                                            ) : (null)
+                                        }
+                                    </div>
+    
+                                ) : (
+                                    <div>
+                                        {
+                                            token ? (
+                                                libro.Reservation.user_id === tokenData.auth_user_id ? (                                              
+                                                    <button href="#" className='btn btn-success form-control' style={styles.reservateButton} disabled>Ya reservado</button>
+                                            ) : (
+                                                <button href="#" className='btn btn-danger form-control' style={styles.reservateButton} disabled>No disponible</button>
+                                            )
+                                            ) : (null)
+                                        }
+                                    </div>
+                                )
+                            }
+                            <div className={styles.detailsContent}>
+                                <Link to={`/Libro/detalles/${libro.id}`} className='btn btn-primary form-control'>Detalles</Link>
+                            </div>
+                        </div>
                         </Box>
                     </div>
                 ))}

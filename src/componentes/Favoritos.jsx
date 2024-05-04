@@ -113,6 +113,11 @@ const Favoritos = () => {
         notFoundImage: {
             height: '280px',
             opacity: '0.2'
+        },
+        container: {
+            height: '90.7vh', // Establece el alto del contenedor al 100% del alto de la ventana
+            display: 'flex',
+            flexDirection: 'column',
         }
     }
     
@@ -218,7 +223,7 @@ const Favoritos = () => {
     }
 
     return (
-        <div className='container' style={{ padding: '10px' }}>
+        <div className='container' style={styles.container}>
             <div style={styles.titleHeader}>
                 <h3>Mis Favoritos</h3>
             </div>
